@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Students</title>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.5.0/axios.min.js"></script>
+    <link rel="icon" href="https://v5.bootcss.com/docs/5.3/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+</head>
+
+<body data-bs-theme="dark">
+    <div class="container mt-5">
+    
+
+        <!-- 增加学生modal -->
+        <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addStudentModalLabel">添加学生信息</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- 表单内容 -->
+                        <form id="addStudentForm">
+
+                             <div class="md-3">
+                                <label for="studentId" class="form-label">学号</label>
+                                <input type="number" class="form-control" id="studentId" maxlength="10" required>
+                             </div>
+                             <div class="mb-3">
+                                <label for="studentName" class="form-label">姓名</label>
+                                <input type="text" class="form-control" id="studentName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="studentMajor" class="form-label">专业</label>
+                                <input type="text" class="form-control" id="studentMajor" required>
+                            </div>
+                            <div class="md-3">
+                                <label for="studentAge" class="form-label">年龄</label>
+                                <input type="number" class="form-control" id="studentAge" required>
+                            </div>
+                            <div class="md-3">
+                                <label for="studentGender" class="form-label">性别</label>
+                                <input type="text" class="form-control" id="studentGender" required>
+                            </div>
+                            <div class="md-3">
+                                <label for="studentPhone" class="form-label">手机号</label>
+                                <input type="text" class="form-control" id="studentPhone" required>
+                            </div>
+                            <div class="md-3">
+                                <label for="studentEmail" class="form-label">邮箱</label>
+                                <input type="text" class="form-control" id="studentEmail" required>
+                            
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="addBtn" class="btn btn-primary" form="addStudentForm" data-bs-dismiss="modal" data-bs-target="#addStudentModal"  >保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 修改学生modal -->
+        <div class="modal fade" id="updateStudentModal"  tabindex="-1" aria-labelledby="updateStudentModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateStudentModalLabel">修改学生信息</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- 表单内容 -->
+                        <form id="updateStudentForm">
+
+                             <div class="md-3">
+                                <label for="studentId" class="form-label">学号</label>
+                                <input type="number" class="form-control" id="updateStudentId" disabled>
+                             </div>
+                             <div class="mb-3">
+                                <label for="studentName" class="form-label">姓名</label>
+                                <input type="text" class="form-control" id="updateStudentName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="studentMajor" class="form-label">专业</label>
+                                <input type="text" class="form-control" id="updateStudentMajor" required>
+                            </div>
+                            <div class="md-3">
+                                <label for="studentAge" class="form-label">年龄</label>
+                                <input type="number" class="form-control" id="updateStudentAge" required>
+                            </div>
+                            <div class="md-3">
+                                <label for="studentGender" class="form-label">性别</label>
+                                <input type="text" class="form-control" id="updateStudentGender" required>
+                            </div>
+                            <div class="md-3">
+                                <label for="studentPhone" class="form-label">手机号</label>
+                                <input type="text" class="form-control" id="updateStudentPhone" required>
+                            </div>
+                            <div class="md-3">
+                                <label for="studentEmail" class="form-label">邮箱</label>
+                                <input type="text" class="form-control" id="updateStudentEmail" required>
+                            
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" form="updateStudentForm" data-bs-dismiss="modal" data-bs-target="#updateStudentModal">保存</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deleteStudent()" data-bs-dismiss="modal" data-bs-target="#updateStudentModal">删除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-5">
+                <input type="text" id="searchName" class="form-control" required placeholder="根据名字搜索">
+            </div>
+            <div class="col-5">
+                <input type="text" id="searchMajor" class="form-control" required placeholder="根据专业搜索">
+            </div>
+            <div class="col-1">
+                <button id="searchbtn" onclick="SearchStudents()" class="btn btn-primary">Search</button>
+            </div>
+            <div class="col-1">
+                <button class="btn btn-success" data-bs-toggle="modal" onclick="initAddModal()" data-bs-target="#addStudentModal">  new  </button>
+            </div>
+        </div>
+        <table class="table table-dark table-hover table-bordered table-striped mt-4" id="studentsTable">
+            <thead>
+                <tr class="text-center">
+                    <th>学号</th>
+                    <th>姓名</th>
+                    <th>专业</th>
+                    <th>年龄</th>
+                    <th>性别</th>
+                    <th>手机号</th>
+                    <th>邮箱</th>
+                </tr>
+            </thead>
+            <tbody id="studentBody">
+                <!-- 学生数据将在这里动态插入 -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="index.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.1/js/bootstrap.bundle.js"></script>
+</body>
+
+</html>
